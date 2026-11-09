@@ -1,0 +1,226 @@
+networks:
+  red_oficinas:
+    driver: ipvlan
+    driver_opts:
+      parent: enp0s8
+      ipvlan_mode: l2
+    ipam:
+      config:
+        - subnet: 10.0.3.16/29
+          gateway: 10.0.3.17
+        - subnet: 10.0.3.24/29
+          gateway: 10.0.3.25
+        - subnet: 10.0.3.32/30
+          gateway: 10.0.3.33
+        - subnet: 10.0.3.128/25
+          gateway: 10.0.3.129
+
+  red_informatica:
+    driver: ipvlan
+    driver_opts:
+      parent: enp0s9
+      ipvlan_mode: l2
+    ipam:
+      config:
+        - subnet: 10.0.3.36/30
+          gateway: 10.0.3.37
+
+  red_servidor:
+    driver: ipvlan
+    driver_opts:
+      parent: enp0s10
+      ipvlan_mode: l2
+    ipam:
+      config:
+        - subnet: 10.0.3.48/28
+          gateway: 10.0.3.49
+
+services:
+  # --- 5 ADMINISTRACIÓN ---
+  admin1:
+    image: alpine
+    container_name: admin1
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.18
+
+  admin2:
+    image: alpine
+    container_name: admin2
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.19
+
+  admin3:
+    image: alpine
+    container_name: admin3
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.20
+
+  admin4:
+    image: alpine
+    container_name: admin4
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.21
+
+  admin5:
+    image: alpine
+    container_name: admin5
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.22
+
+  # --- 3 VENTAS ---
+  ventas1:
+    image: alpine
+    container_name: ventas1
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.26
+
+  ventas2:
+    image: alpine
+    container_name: ventas2
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.27
+
+  ventas3:
+    image: alpine
+    container_name: ventas3
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.28
+
+  # --- 1 DIRECCIÓN ---
+  direccion1:
+    image: alpine
+    container_name: direccion1
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.34
+
+  # --- 1 INFORMÁTICA ---
+  informatica1:
+    image: alpine
+    container_name: informatica1
+    command: sh -c "apk add --no-cache tcpdump bind-tools openssh-client postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    networks:
+      red_informatica:
+        ipv4_address: 10.0.3.38
+
+  # --- 1 SERVIDOR ---
+  servidor1:
+    image: alpine
+    container_name: servidor1
+    command: sh -c "apk add --no-cache bind-tools postgresql-client && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_servidor:
+        ipv4_address: 10.0.3.50
+
+  # --- 1 INVITADOS ---
+  invitado1:
+    image: alpine
+    container_name: invitado1
+    command: sh -c "apk add --no-cache bind-tools && sleep infinity"
+    healthcheck:
+      test: ["CMD", "pgrep", "sleep"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    dns: [10.0.3.60]
+    networks:
+      red_oficinas:
+        ipv4_address: 10.0.3.130
